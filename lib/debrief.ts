@@ -1,7 +1,7 @@
 import { EVALUATOR_MODEL, TRAINEE_EMAIL } from "@/lib/constants";
 import { getGroqEval, isGroqEvalConfigured } from "@/lib/groq";
 import { mockEvaluate } from "@/lib/mock-data";
-import { withoutEmDashes, withoutEmDashesDeep } from "@/lib/prose";
+import { withoutEmDashesDeep } from "@/lib/prose";
 import type {
   DebriefReport,
   EmailEvaluation,

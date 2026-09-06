@@ -1,7 +1,4 @@
-import {
-  DEMO_SCENARIO_ID,
-  TRAINEE_EMAIL,
-} from "@/lib/constants";
+import { DEMO_SCENARIO_ID } from "@/lib/constants";
 import { OPENING_MAIL } from "@/lib/opening-mail";
 import {
   bounceWrongLane,

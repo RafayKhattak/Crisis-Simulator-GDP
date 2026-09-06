@@ -152,7 +152,6 @@ export async function evaluateTraineeMessage(params: {
   userMessage: string;
   ragContext: string;
   characterEmail?: string;
-  characterName?: string;
   priorTraineeMessage?: string;
 }): Promise<EvaluatorResult> {
   if (params.characterEmail) {

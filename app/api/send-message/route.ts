@@ -105,7 +105,6 @@ export async function POST(request: Request) {
         userMessage,
         ragContext,
         characterEmail: character.email,
-        characterName: character.name,
         priorTraineeMessage: lastTraineeContent(history, TRAINEE_EMAIL),
       }).catch(() => mockEvaluate(userMessage, character.email)),
     ]);
