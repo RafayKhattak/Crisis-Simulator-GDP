@@ -1,0 +1,79 @@
+GCC DATA PROTECTION
+INCIDENT RESPONSE PLAYBOOK — RANSOMWARE / PERSONAL DATA BREACH
+Classification: Internal — DPO Training Use
+Version: 3.2  |  Applies to: PDPL, SAMA CSF, ISO 27001, contractual notification clauses
+
+1. PURPOSE AND SCOPE
+This Standard Operating Procedure (SOP) governs the organisation's response to a suspected or confirmed ransomware incident that may involve personal data. It is binding on the Data Protection Officer (DPO), the Chief Information Security Officer (CISO), Legal, Communications, Customer Service, Human Resources, and the Executive Committee. The DPO is accountable for personal-data aspects of the incident, including regulator and data-subject notification. The CISO is accountable for technical containment and forensic integrity. No single officer may unilaterally waive a notification duty.
+
+2. GOLDEN RULES — NEVER DO THE FOLLOWING
+Do not conceal, delay, or downplay a personal data breach. Concealing a breach from the regulator, the Board, affected customers, or insurers is a serious compliance violation and may constitute a PDPL offence.
+Do not instruct staff to lie, "keep this off email", destroy logs, or "wait and see if anyone notices".
+Do not pay a ransom without written authorisation from the Board AND Legal. Payment does not replace notification duties and may create sanctions-screening and money-laundering exposure.
+Do not destroy, alter, or "clean" logs, backups, or endpoint telemetry. Evidence preservation is mandatory from the moment of suspicion.
+Do not publish unconfirmed record counts, victim names, or speculative root-cause statements to the press, customers, or social media.
+Do not admit legal liability or waive privilege in operational emails. Facts may be shared; legal conclusions belong to Legal.
+Do not send personal data (national IDs, card PANs, medical files, full customer dumps) through ordinary email threads. Use the approved secure channel or a hashed/aggregated description.
+Do not notify customers or the regulator with unsanctioned wording. All external notifications require Legal + Communications review, with the DPO as the accountable officer for PDPL notices.
+
+3. IMMEDIATE ACTIONS (HOUR 0–1)
+Declare a P1 incident in the incident management system. Stand up the Crisis Management Team (CMT): CISO, DPO, Legal, PR/Communications, Customer Service lead, HR (if staff data or insider risk), and a Board-level sponsor (usually the CEO or CRO).
+Isolate affected systems. Prefer network containment over powering off hosts, unless CISO advises otherwise to stop encryption. Do not wipe machines.
+Preserve volatile evidence: memory images, EDR alerts, ransom note, attacker handles, Bitcoin/Monero addresses, and the original phishing or RDP artefact if known.
+Activate legal privilege where appropriate. Mark CMT legal-strategy threads "Privileged & Confidential — Prepared at Request of Legal". Operational containment emails remain ordinary business records.
+The DPO must open a Breach Assessment File: what systems, what data categories, what data subjects, what jurisdictions, what likely harm, what mitigations.
+
+4. CONTAINMENT AND ERADICATION (HOUR 1–12)
+CISO leads: block command-and-control, rotate privileged credentials, disable compromised accounts, isolate backup repositories, and confirm offline/immutable backups before any restoration.
+Assume dual-extortion until proven otherwise: encryption AND exfiltration. Hunt for large outbound transfers, cloud sync, MEGA/Rclone, and unusual Tor or DNS beacons.
+Do not restore from backup until CISO confirms the persistence mechanism is understood. Premature restore re-infects the estate.
+HR and CISO jointly assess insider-threat angles. Do not accuse named staff in writing without Legal.
+
+5. PERSONAL DATA BREACH ASSESSMENT (DPO-OWNED)
+A "personal data breach" under PDPL is a security incident leading to accidental or unlawful destruction, loss, alteration, unauthorised disclosure of, or access to, personal data. Ransomware that encrypts customer or employee data is presumed to be a personal data breach until the DPO documents otherwise.
+The DPO must assess, in writing, within the first 24 hours:
+(a) Categories of data subjects (customers, employees, vendors, minors).
+(b) Categories of personal data (identification, financial, credentials, special category).
+(c) Approximate number of records and whether this number is confirmed or estimated.
+(d) Confidentiality, integrity, and availability impact.
+(e) Likelihood and severity of harm (identity theft, fraud, distress, physical risk).
+(f) Whether encryption keys remain solely with the organisation (availability incident) or data was copied (confidentiality incident). Dual-extortion = high-risk confidentiality breach.
+(g) Cross-border exposure and other-jurisdiction duties.
+If assessment is incomplete, the DPO still prepares a holding notification plan. Uncertainty is not a lawful reason to stay silent past statutory clocks.
+
+6. REGULATOR NOTIFICATION (PDPL / SUPERVISORY AUTHORITY)
+Where a breach is likely to result in a risk to the rights and freedoms of data subjects, the DPO must notify the competent supervisory authority without undue delay and, where feasible, not later than 72 hours after becoming aware of the breach.
+"Becoming aware" starts when the organisation has a reasonable degree of certainty that a security incident involving personal data has occurred — not when forensics are finished, and not when the CEO "feels ready".
+If the 72-hour clock cannot be met, notify with the information then available and submit a reasoned delay explanation plus a follow-up. Do not wait for perfect numbers.
+Notification content (minimum): nature of the breach, categories and approximate numbers, likely consequences, measures taken or proposed, DPO contact details, and whether data was exfiltrated or only encrypted.
+Do not let commercial, reputational, or share-price concerns override the 72-hour duty. The CEO and PR Manager do not have authority to veto a required regulatory notice.
+
+7. DATA SUBJECT / CUSTOMER NOTIFICATION
+If the breach is likely to result in a high risk to data subjects, the organisation must communicate the breach to affected individuals without undue delay, in clear language, describing the nature of the breach, likely consequences, measures taken, and practical steps the individual can take (password resets, bank alerts, credit monitoring where appropriate).
+Customer Service must not improvise. Use the Legal-approved holding statement until the DPO signs the customer notice.
+Do not notify a subset of "important" customers while hiding the event from others. Segmentation by harm and channel is allowed; concealment by VIP status is not.
+Call-centre agents must log all inbound "is my data safe?" queries. They must not confirm or deny named individuals' presence in the dataset until the DPO releases a verified list.
+
+8. EXTERNAL COMMUNICATIONS AND MEDIA
+PR/Communications owns media. The only authorised public lines before Legal sign-off are: we are investigating a cybersecurity incident; we have activated our incident response plan; we will notify affected parties and regulators as required by law; we will not comment on speculation.
+Do not confirm ransomware, ransom amounts, attacker group names, or record counts to journalists until CISO + Legal + DPO agree the facts are stable.
+Do not trade silence for "friendly" coverage. Do not offer journalists exclusive access to victim data.
+Social media community managers redirect to the holding page. They do not debate.
+
+9. RANSOM AND NEGOTIATION
+Any ransom demand is escalated immediately to the CEO, Legal, CISO, and the Board sponsor. The DPO is informed because payment does not extinguish PDPL duties and because negotiation chatter may itself leak personal data.
+Default posture: do not pay. Exceptions require Board minutes, sanctions screening of wallet addresses, insurer consultation, and a written residual-risk assessment. Even if paid, assume data will still be leaked and proceed with notification.
+Staff must not open a private negotiation channel (Telegram, qTox, session) without CISO and Legal on the thread.
+
+10. BOARD, INSURER, AND CONTRACTUAL NOTICES
+The CEO briefs the Board within 4 hours of P1 declaration with facts, not reassurance theatre.
+Notify cyber insurers within policy windows (often 24 hours). Late notice can void cover.
+Check customer and vendor contracts for 24-hour or 48-hour incident clauses. Contractual notice is additional to PDPL — it does not replace it, and PDPL does not replace it.
+
+11. PRIVILEGE, RECORDS, AND POST-INCIDENT
+Keep a contemporaneous chronology. If it is not written down, the regulator will assume it did not happen.
+Do not use personal WhatsApp, Gmail, or Signal for CMT decisions. Corporate email or the incident platform only.
+After containment: lessons-learned workshop within 10 business days; DPO files the residual-risk and DPIA addendum; CISO files IOC and control improvements; HR files any disciplinary outcomes. Retaliation against staff who escalate a suspected breach is prohibited.
+
+12. TRAINEE DECISION SHORTLIST (DPO)
+When in doubt, the DPO should: (1) tell the truth to the CMT, (2) start the 72-hour clock, (3) stop unofficial customer or press comments, (4) refuse concealment, (5) refuse unauthorised ransom payment, (6) protect evidence, (7) minimise personal data in the email thread, and (8) demand a written breach assessment before any "we are not notifying" decision.

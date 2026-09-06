@@ -1,0 +1,250 @@
+.gmail-account {
+  position: absolute;
+  top: 48px;
+  right: 8px;
+  width: 280px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(32, 33, 36, 0.18);
+  padding: 16px 14px 10px;
+  z-index: 40;
+  color: #202124;
+}
+
+.gmail-account-name {
+  margin: 0;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.gmail-account-email,
+.gmail-account-role {
+  margin: 2px 0 0;
+  color: #5f6368;
+  font-size: 12px;
+}
+
+.gmail-account button {
+  width: 100%;
+  margin-top: 8px;
+  border: 0;
+  background: #f1f3f4;
+  border-radius: 8px;
+  height: 36px;
+  cursor: pointer;
+  font: 500 13px Roboto, Arial, sans-serif;
+  color: #202124;
+}
+
+.gmail-account button:hover {
+  background: #e8eaed;
+}
+
+.brand-footer {
+  flex-shrink: 0;
+  background: #000;
+  color: #c8c8c8;
+  padding: 14px 24px 16px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.brand-footer-lockup {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand-footer-org,
+.brand-footer-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+  margin: 0;
+}
+
+.brand-footer-caption small,
+.brand-footer-org small,
+.brand-footer-product small {
+  display: block;
+  color: #8a8a8a;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.brand-footer-org strong,
+.brand-footer-product {
+  font-size: 13px;
+  font-weight: 500;
+  color: #f2f2f2;
+}
+
+.brand-footer-rule {
+  width: 1px;
+  height: 32px;
+  background: #2a2a2a;
+}
+
+.brand-logo-gcc {
+  height: 40px;
+  width: auto;
+  max-width: 210px;
+  display: block;
+  object-fit: contain;
+}
+
+.brand-logo-gcc-hero {
+  height: 48px;
+  max-width: 260px;
+}
+
+.brand-logo-archwares {
+  width: 32px;
+  height: 32px;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.portal {
+  --gcc-green: #006135;
+  --gcc-gold: #b47f00;
+  --ink: #141414;
+  --muted: #5c5c5c;
+  --line: #d8d8d8;
+  --paper: #f4f4f2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.portal-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.portal-sheet {
+  width: 100%;
+  max-width: 400px;
+}
+
+.portal-rule {
+  display: block;
+  width: 40px;
+  height: 2px;
+  margin: 18px 0 22px;
+  background: var(--gcc-gold);
+}
+
+.portal-product {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.portal-sheet h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.portal-lead {
+  margin: 10px 0 28px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.portal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.portal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.portal-form input {
+  height: 42px;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  padding: 0 12px;
+  font: 400 15px inherit;
+}
+
+.portal-form input:focus {
+  outline: none;
+  border-color: var(--gcc-green);
+  box-shadow: 0 0 0 1px var(--gcc-green);
+}
+
+.portal-form button {
+  margin-top: 4px;
+  height: 42px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--gcc-green);
+  color: #fff;
+  font: 500 15px inherit;
+  cursor: pointer;
+}
+
+.portal-form button:hover {
+  background: #004d2a;
+}
+
+.portal-form button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.portal-error {
+  margin: 0;
+  color: #9b1c1c;
+  font-size: 13px;
+}
+
+.portal-hint {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+@media (max-width: 860px) {
+  .portal-main {
+    padding: 32px 20px 24px;
+    align-items: flex-start;
+  }
+
+  .brand-footer-lockup {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-footer-rule {
+    display: none;
+  }
+}

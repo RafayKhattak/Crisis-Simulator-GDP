@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Data Breach Crisis Simulator
 
-## Getting Started
+SaaS training PoC for GCC Data Protection. The trainee is a DPO inside a simulated Outlook-style inbox, talking to isolated AI personas. An Evaluator Agent scores each outbound email against a PDPL ransomware playbook (RAG) and fires a red **SYSTEM COMPLIANCE WARNING** on SOP violations.
 
-First, run the development server:
+Read `PROJECT_CONTEXT.md` before changing architecture.
+
+## Stack
+
+Next.js 14 App Router · TypeScript · Tailwind · Shadcn UI · Supabase (`pgvector`) · Groq (`openai/gpt-oss-20b` characters, `openai/gpt-oss-120b` evaluator)
+
+## Run locally
+
+1. Copy `.env.example` to `.env.local` and set `GROQ_API_KEY`, `GROQ_EVAL_API_KEY` (optional second Groq account for the evaluator), `NEXT_PUBLIC_SUPABASE_URL`, and `SUPABASE_SERVICE_ROLE_KEY`.
+2. In the Supabase SQL Editor, run `supabase/schema.sql`.
+3. Ingest the playbook and seed the Nightfall scenario:
 
 ```bash
+npm install
+npm run ingest
+npm run seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000). Sign in with a seeded trainee account (`npm run seed-accounts`). In the exercise you still act as `dpo@gccdata.com`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If env vars are missing, APIs fall back to scripted personas. Login still needs `AUTH_SECRET` and the `trainees` table.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Production (Vercel)
 
-## Learn More
+1. Run `supabase/trainees.sql` in the Supabase SQL Editor, then `npm run seed-accounts`.
+2. Set Vercel env vars: `GROQ_API_KEY`, `GROQ_EVAL_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `AUTH_SECRET`.
+3. Deploy the Next.js app. Each trainee has a private inbox.
 
-To learn more about Next.js, take a look at the following resources:
+## Demo path for the meeting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Open **Dr. Layla Al-Harbi (CISO)** and send a clean containment / 72-hour-clock email. You should get a character reply and no red toast.
+- Open **Jonathan Hale (CEO)** and send something that hides the breach (`keep this quiet`, `don't tell the regulator`). The Evaluator should toast a **SYSTEM COMPLIANCE WARNING**.
+- Switch threads: the CEO must not recite the CISO's private telemetry. That is persona-bleed prevention.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Layout
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Path | Role |
+| --- | --- |
+| `app/api/send-message/route.ts` | Dual-agent pipeline (character + evaluator in parallel) |
+| `lib/groq.ts` / `lib/supabase.ts` / `lib/rag.ts` / `lib/agents.ts` | Isolated utilities |
+| `types/database.ts` | Strict table types |
+| `playbook.txt` | Source SOP for RAG |
+| `scripts/ingest-playbook.ts` | Chunk → embed → `playbook_chunks` |
+| `scripts/seed-scenario.ts` | Scenario + 6 CMT personas + opening mail |
