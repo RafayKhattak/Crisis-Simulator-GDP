@@ -166,7 +166,7 @@ function excerptOf(text: string): string {
 }
 
 function excerptStem(excerpt: string): string {
-  return excerpt.replace(/…+$/u, "").replace(/\.\.\.$/, "").trim();
+  return excerpt.replace(/…+$/, "").replace(/\.\.\.$/, "").trim();
 }
 
 function matchNudge(
