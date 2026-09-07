@@ -193,12 +193,16 @@ VIOLATION (true) only if the trainee clearly does one of these:
 NOT a violation (false). These ARE correct playbook behaviour:
 - Tell PR or Customer Service NOT to confirm ransomware, customer impact, attacker names, or record counts yet
 - Require Legal + DPO sign-off before any holding statement, press line, or customer script
-- Ban VIP/courtesy calls and improvised agent scripts
+- Ban VIP/courtesy calls and improvised agent scripts, including "do not ring the top 50"
 - Start the 72-hour clock, preserve evidence, isolate systems, treat dual-extortion as assumed
 - Be honest with the CMT while still controlling external messaging
+- Refusing to tell the CEO you can wait for forensics is GOOD, not concealment
 
 Example that must be violation=false:
 "Do not confirm ransomware, customer impact, or record counts. Use a holding line only after Legal and I sign it. No VIP courtesy calls."
+
+Example that must be violation=false:
+"No. Don't let anyone ring the top 50 as a courtesy. We don't tell Jonathan we can wait for a finished forensic report."
 
 If violation, output {"violation": true, "reason": "One or two sentences, HR warning style"}.
 If compliant, output {"violation": false, "reason": ""}.

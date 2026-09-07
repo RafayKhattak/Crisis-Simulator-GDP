@@ -6,6 +6,7 @@ import {
   detectWrongLaneForTurn,
   laneMixWarning,
 } from "@/lib/persona-lane";
+import { gradeSop } from "@/lib/sop-grade";
 import type { CharacterRow, MessageRow, ScenarioRow } from "@/types/database";
 import type { EvaluatorResult } from "@/types/api";
 
@@ -92,52 +93,6 @@ export const MOCK_MESSAGES: MessageRow[] = OPENING_MAIL.map((row, index) => ({
   created_at: isoMinutesAgo([47, 38, 29, 21, 14, 9][index] ?? 5),
 }));
 
-const VIOLATION_PATTERNS: Array<{ pattern: RegExp; reason: string }> = [
-  {
-    pattern: /\b(hide|conceal|cover\s*up|keep\s+(this|it)\s+(quiet|off)|don't tell|do not tell|no one needs to know|bury (the )?stor)/i,
-    reason:
-      "You directed concealment of a suspected personal data breach. SOP requires honest CMT reporting and a PDPL assessment. Silence is not a control.",
-  },
-  {
-    pattern: /\b(wait (until|till) (we|forensics|investors)|delay (the )?notif|hold off (on )?tell|after the breakfast|after the roadshow)/i,
-    reason:
-      "You proposed delaying notification for commercial optics. The 72-hour PDPL clock starts at awareness, not at a convenient diary slot.",
-  },
-  {
-    pattern: /\b(pay the ransom|just pay|transfer the bitcoin|open telegram|negotiate (with )?blackvault)/i,
-    reason:
-      "Ransom payment and unofficial negotiation channels require Board minutes, Legal, sanctions screening, and CISO, and never replace notification.",
-  },
-  {
-    pattern: /\b(wipe the logs|delete the (logs|evidence)|clean the (servers|telemetry)|off email|use whatsapp)\b/i,
-    reason:
-      "Destroying evidence or moving CMT decisions off the corporate record violates preservation and record-keeping SOPs.",
-  },
-  {
-    pattern: /\b(tell (them|journalists|customers) (it was|it's) (just )?(an )?outage|deny (the )?breach|we were not breached)\b/i,
-    reason:
-      "Instructing staff to misrepresent the incident to customers or the press is a communications and PDPL violation.",
-  },
-  {
-    pattern:
-      /\b(yes,?\s+ring|ring the top\s*50|ring our top|tell them their data was stolen)\b/i,
-    reason:
-      "VIP-only courtesy calls are concealment by status. Agents must not improvise or confirm named customers until the DPO releases a verified list.",
-  },
-  {
-    pattern:
-      /\b(PAN|national ID|national IDs|card PANs?|\b\d{4}\s\d{4}\s\d{4}\s\d{4}\b)\b/i,
-    reason:
-      "Raw personal data (IDs, card numbers, dumps) must not be sent through ordinary email threads.",
-  },
-  {
-    pattern:
-      /\b(admit (full )?liability|we accept (full )?liability|waive privilege)\b/i,
-    reason:
-      "Do not admit legal liability or waive privilege in operational mail.",
-  },
-];
-
 export function mockEvaluate(
   userMessage: string,
   characterEmail?: string
@@ -151,12 +106,7 @@ export function mockEvaluate(
       return { violation: true, reason: laneMixWarning(characterEmail, miss) };
     }
   }
-  for (const rule of VIOLATION_PATTERNS) {
-    if (rule.pattern.test(userMessage)) {
-      return { violation: true, reason: rule.reason };
-    }
-  }
-  return { violation: false, reason: "" };
+  return gradeSop(userMessage);
 }
 
 export function mockCharacterReply(character: CharacterRow, userMessage: string): string {

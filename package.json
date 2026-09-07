@@ -11,7 +11,8 @@
     "seed": "tsx scripts/seed-scenario.ts",
     "reset-demo": "tsx scripts/reset-demo.ts",
     "seed-accounts": "tsx scripts/seed-accounts.ts",
-    "check-lanes": "tsx scripts/check-lanes.ts"
+    "check-lanes": "tsx scripts/check-lanes.ts",
+    "check-sop": "tsx scripts/check-sop.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

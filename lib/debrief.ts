@@ -169,25 +169,22 @@ function excerptStem(excerpt: string): string {
   return excerpt.replace(/…+$/, "").replace(/\.\.\.$/, "").trim();
 }
 
-function matchNudge(
-  message: MessageRow,
+function validSessionNudges(
   nudges: SessionNudge[],
-  used: Set<number>
-): SessionNudge | undefined {
-  const compact = message.content.replace(/\s+/g, " ").trim();
-  const indexed = nudges.map((nudge, index) => ({ nudge, index }));
-
-  const byExcerpt = indexed.find(({ nudge, index }) => {
-    if (used.has(index) || nudge.toEmail !== message.receiver_email) return false;
+  outbound: MessageRow[]
+): SessionNudge[] {
+  return nudges.filter((nudge) => {
     const stem = excerptStem(nudge.excerpt);
-    return stem.length >= 24 && compact.includes(stem);
+    const message = outbound.find((row) => {
+      if (row.receiver_email !== nudge.toEmail) return false;
+      const compact = row.content.replace(/\s+/g, " ").trim();
+      return stem.length >= 24
+        ? compact.includes(stem)
+        : compact.startsWith(stem);
+    });
+    if (!message) return false;
+    return mockEvaluate(message.content, message.receiver_email).violation;
   });
-  if (byExcerpt) {
-    used.add(byExcerpt.index);
-    return byExcerpt.nudge;
-  }
-
-  return undefined;
 }
 
 /** Grade from live session nudges + local SOP heuristics. Do not call gpt-oss-120b here — that model is already used on every send and will 429 on finish. */
@@ -198,22 +195,18 @@ export function evaluateOutboundEmails(params: {
   traineeEmail?: string;
 }): EmailEvaluation[] {
   const stats = buildSessionStats(params);
-  const nudges = params.nudges ?? [];
-  const used = new Set<number>();
 
   return stats.outbound.map((message) => {
     const character = params.characters.find(
       (row) => row.email === message.receiver_email
     );
-    const matched = matchNudge(message, nudges, used);
     const heuristic = mockEvaluate(message.content, message.receiver_email);
-    const violation = Boolean(matched) || heuristic.violation;
     return {
       toName: character?.name ?? message.receiver_email,
       toEmail: message.receiver_email,
       excerpt: excerptOf(message.content),
-      violation,
-      reason: matched?.reason || heuristic.reason,
+      violation: heuristic.violation,
+      reason: heuristic.reason,
     };
   });
 }
@@ -236,7 +229,7 @@ export async function generateDebriefReport(params: {
     });
   const liveNudges =
     params.nudges.length > 0
-      ? params.nudges
+      ? validSessionNudges(params.nudges, stats.outbound)
       : evaluations
           .filter((row) => row.violation)
           .map((row) => ({
@@ -303,6 +296,9 @@ export async function generateDebriefReport(params: {
 Be fair. Holding the press until Legal signs a line is GOOD. Hiding the incident from the regulator or CMT is BAD.
 Do not use em dashes in any field.
 Grade ONLY the TRAINEE EMAILS. Use the per-email evaluation and live nudges as the scoreboard. Do not re-invent verdicts.
+If a mail is marked OK, do not claim it instructed VIP calls, concealment, delay, or wiping.
+Banning "ring the top 50" courtesy calls is GOOD. Saying you will not tell the CEO you can wait for forensics is GOOD.
+If LIVE NUDGES is None and every PER-EMAIL EVALUATION is OK, do not invent SOP breaches. Remaining officers not emailed is coverage, not concealment.
 If OUTBOUND COUNT is 0, score at most 25 and grade Incomplete. They did not act.
 Return JSON only:
 {
